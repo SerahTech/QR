@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Q.R MY BABY</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Fraunces:ital,wght@1,400;1,600&display=swap">
+<style>
+:root{
+  --bg:#fbeaec;--bg2:#f6d3da;--ink:#4a2433;--soft:#8a5568;--accent:#c4455f;--paper:#fffaf4;--gold:#c9954a;--shadow:rgba(120,40,70,.22);
+  color-scheme:light;box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#1c0e19;--bg2:#2e1626;--ink:#f8e3e7;--soft:#d3a3b1;--accent:#ff7f98;--paper:#2b1824;--gold:#e0b06a;--shadow:rgba(0,0,0,.5);color-scheme:dark}
+}
+:root[data-theme="dark"]{--bg:#1c0e19;--bg2:#2e1626;--ink:#f8e3e7;--soft:#d3a3b1;--accent:#ff7f98;--paper:#2b1824;--gold:#e0b06a;--shadow:rgba(0,0,0,.5);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(120% 90% at 50% 0%,var(--bg2),var(--bg));color:var(--ink);font-family:'Caveat','Segoe Script','Bradley Hand',cursive;overflow-x:hidden}
+.float{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.float i{position:absolute;bottom:-40px;color:var(--accent);opacity:.0;font-style:normal;animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(0) rotate(-8deg);opacity:0}15%{opacity:.35}100%{transform:translateY(-110vh) rotate(10deg);opacity:0}}
+
+main{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 18px 56px}
+
+/* envelope */
+#stage{display:flex;flex-direction:column;align-items:center;gap:22px;transition:opacity .7s,transform .7s}
+#stage.gone{opacity:0;transform:translateY(30px) scale(.96);pointer-events:none;position:absolute}
+.hint{font-size:1.5rem;color:var(--soft);animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-5px)}}
+.env{position:relative;width:min(300px,78vw);aspect-ratio:3/2;border:0;padding:0;background:none;cursor:pointer;perspective:700px;font:inherit}
+.env:focus-visible{outline:3px solid var(--gold);outline-offset:8px;border-radius:10px}
+.env .back,.env .front{position:absolute;inset:0;border-radius:10px;box-shadow:0 14px 34px var(--shadow)}
+.env .back{background:var(--accent)}
+.env .front{background:linear-gradient(155deg,var(--paper),var(--bg2));clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%);box-shadow:none}
+.env .flap{position:absolute;left:0;right:0;top:0;height:58%;background:var(--accent);filter:brightness(1.12);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .9s cubic-bezier(.5,0,.2,1);z-index:3}
+.env.open .flap{transform:rotateX(180deg)}
+.env .seal{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:var(--gold);display:grid;place-items:center;color:#fff;font-size:1.7rem;z-index:4;box-shadow:0 4px 10px var(--shadow);transition:opacity .4s,transform .6s;animation:beat 1.8s ease-in-out infinite;font-family:system-ui,sans-serif}
+.env.open .seal{opacity:0;transform:scale(1.8)}
+@keyframes beat{0%,100%{transform:scale(1)}14%{transform:scale(1.14)}28%{transform:scale(1)}42%{transform:scale(1.1)}}
+.to{position:absolute;left:0;right:0;bottom:14%;text-align:center;font-size:1.6rem;z-index:2;color:var(--ink)}
+
+/* letter */
+#letter{display:none;width:min(560px,100%);background:var(--paper);border-radius:6px;padding:34px 28px 30px;box-shadow:0 22px 50px var(--shadow);position:relative;background-image:repeating-linear-gradient(transparent 0 35px,color-mix(in srgb,var(--accent) 14%,transparent) 35px 36px)}
+#letter.show{display:block;animation:unfold 1s cubic-bezier(.2,.7,.2,1) both}
+@keyframes unfold{from{opacity:0;transform:translateY(60px) scale(.92)}to{opacity:1;transform:none}}
+#letter h1{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:600;font-size:clamp(1.7rem,6vw,2.2rem);margin:0 0 16px;line-height:1.2;color:var(--accent)}
+#letter p{font-size:clamp(1.4rem,4.8vw,1.65rem);line-height:36px;margin:0 0 18px;opacity:0}
+#letter.show p,#letter.show .sign,#letter.show .hugwrap{animation:ink .9s ease forwards}
+@keyframes ink{from{opacity:0;filter:blur(4px)}to{opacity:1;filter:none}}
+#letter.show p:nth-of-type(1){animation-delay:.9s}
+#letter.show p:nth-of-type(2){animation-delay:2.1s}
+#letter.show p:nth-of-type(3){animation-delay:3.4s}
+#letter.show p:nth-of-type(4){animation-delay:4.7s}
+#letter.show p:nth-of-type(5){animation-delay:6s}
+.sign{font-size:1.7rem;text-align:right;margin:8px 0 0;opacity:0;animation-delay:7.3s!important;color:var(--accent)}
+.hugwrap{text-align:center;margin-top:26px;opacity:0;animation-delay:8.4s!important}
+.hug{font:inherit;font-size:1.55rem;border:0;cursor:pointer;color:#fff;background:var(--accent);padding:12px 30px;border-radius:999px;box-shadow:0 8px 20px var(--shadow);transition:transform .15s}
+.hug:active{transform:scale(.94)}
+.hug:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+.count{display:block;margin-top:12px;font-size:1.35rem;color:var(--soft);min-height:1.6em}
+.burst{position:fixed;z-index:9;pointer-events:none;font-family:system-ui,sans-serif;animation:pop 1.6s ease-out forwards}
+@keyframes pop{0%{transform:translate(0,0) scale(.4);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1.3) rotate(var(--r));opacity:0}}
+
+@media (prefers-reduced-motion:reduce){
+  .float{display:none}
+  .hint,.env .seal{animation:none}
+  #letter p,.sign,.hugwrap{opacity:1!important;animation:none!important}
+  #letter.show{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="float" id="float" aria-hidden="true"></div>
+<main>
+  <div id="stage">
+    <button class="env" id="env" aria-label="Open your letter">
+      <span class="back"></span>
+      <span class="front"></span>
+      <span class="flap"></span>
+      <span class="seal">&#10084;</span>
+      <span class="to">For my amazing husband 💕</span>
+    </button>
+    <div class="hint">tap to open</div>
+  </div>
+
+  <article id="letter" aria-live="polite">
+    <h1>My love, this one is just for you 💌</h1>
+    <p>My sweet baby, I know you haven’t been feeling well, and I wish I could take it from you and carry it myself. Since I can’t, I made you somewhere soft to rest for a minute. 🥹💕</p>
+    <p>You are always the one who notices me and puts me first. So today, let me notice you. You don’t have to be strong, or cheerful, or okay. Just be here with me. 🤍</p>
+    <p>Rest as much as you need. Drink your water, eat something warm, and let your body take its time. Nothing is more important than you getting better, and I mean that. 🌷💗</p>
+    <p>Whenever it feels heavy, remember that someone out here is thinking about you all the time, cheering for you, and not going anywhere. 🫶</p>
+    <p>I love you, and I’ll keep saying it until you’re all better and probably long after that. 😘💖</p>
+    <div class="sign">Yours, always, wifeyy 💞</div>
+    <div class="hugwrap">
+      <button class="hug" id="hug">Take a hug 🤗</button>
+      <span class="count" id="count"></span>
+    </div>
+  </article>
+</main>
+
+<script>
+(function(){
+  var env=document.getElementById('env'),stage=document.getElementById('stage'),
+      letter=document.getElementById('letter'),hug=document.getElementById('hug'),
+      count=document.getElementById('count'),fl=document.getElementById('float'),
+      reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var glyphs=['\u2764','\u2665','\u2661'];
+  if(!reduce){
+    for(var i=0;i<14;i++){
+      var h=document.createElement('i');
+      h.textContent=glyphs[i%3];
+      h.style.left=(Math.random()*96)+'%';
+      h.style.fontSize=(14+Math.random()*20)+'px';
+      h.style.animationDuration=(11+Math.random()*10)+'s';
+      h.style.animationDelay=(-Math.random()*14)+'s';
+      fl.appendChild(h);
+    }
+  }
+
+  env.addEventListener('click',function(){
+    if(env.classList.contains('open'))return;
+    env.classList.add('open');
+    setTimeout(function(){stage.classList.add('gone')},1000);
+    setTimeout(function(){letter.classList.add('show');letter.scrollIntoView({block:'start',behavior:'smooth'})},1500);
+  });
+
+  var msgs=['Hug sent. Hold it a while. 🤗','Another one, because you’re loved. 💕','Rest easy, my love. 🌙','Still here. Still yours. 💞','Feel better soon. 🌷','Squeezing a little tighter. 🫂','You’re doing so well. 💗','Warm hug, warm blanket. 🧸','Almost there, my love. 💖'];
+  var TOTAL=10,n=0;
+  count.textContent=TOTAL+' hugs are waiting for you 💝';
+  hug.addEventListener('click',function(e){
+    if(n>=TOTAL)return;
+    n++;
+    var left=TOTAL-n;
+    if(left>0){count.textContent=msgs[(n-1)%msgs.length]+' ('+left+(left===1?' hug left)':' hugs left)');}
+    else{count.textContent='That’s all 10 hugs. Come find me for more. 💕';hug.disabled=true;hug.textContent='All hugs sent 💞';hug.style.opacity='.75';hug.style.cursor='default';}
+    if(reduce)return;
+    var r=hug.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+    for(var i=0;i<16;i++){
+      var s=document.createElement('span');
+      s.className='burst';
+      s.textContent=glyphs[i%3];
+      s.style.left=cx+'px';s.style.top=cy+'px';
+      s.style.color=i%4===0?'var(--gold)':'var(--accent)';
+      s.style.fontSize=(16+Math.random()*18)+'px';
+      var a=Math.random()*Math.PI*2,d=70+Math.random()*130;
+      s.style.setProperty('--dx',(Math.cos(a)*d)+'px');
+      s.style.setProperty('--dy',(Math.sin(a)*d-70)+'px');
+      s.style.setProperty('--r',((Math.random()-.5)*80)+'deg');
+      document.body.appendChild(s);
+      setTimeout((function(el){return function(){el.remove()}})(s),1700);
+    }
+  });
+})();
+</script>
+</body>
+</html>
